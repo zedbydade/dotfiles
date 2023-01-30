@@ -1,6 +1,4 @@
 set $opacity 0.95
-# Notification stuff
-exec mako
 default_border none
 smart_gaps on
 hide_edge_borders smart
@@ -13,30 +11,41 @@ set $down j
 set $up k
 set $right l
 set $term kitty
-set $menu dmenu_path | dmenu | xargs swaymsg exec --
+set $browser librewolf
+set $menu $HOME/.config/rofi/launcher.sh
 
 # Set bg
-output "DP-2" bg /home/toggles/.config/sway/wallpapers/wp1.png fill
-output "DP-1" bg /home/toggles/.config/sway/wallpapers/wp2.png fill
+#output "DP-2" bg /home/toggles/.config/sway/wallpapers/wp1.png fill
+#output "HDMI-1" bg /home/toggles/.config/sway/wallpapers/wp2.png fill
 # Set resolution and high refresh rate
-output "DP-2" mode "2560x1440@119.998Hz"
-output "DP-1" mode "2560x1440@119.998Hz"
+#output "DP-2" mode "2560x1440@119.998Hz"
+#output "DP-1" mode "2560x1440@119.998Hz"
 ### Idle configuration
 exec swayidle -w \
         timeout 1000 'swaylock -f -c 000000' \
         timeout 6000 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
         before-sleep 'swaylock -f -c 000000'
 
+bindsym $mod+u mode "resize"
 ### Key bindings
 #
 # Basics:
 #
+    # Sound 
+    bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+    bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+    bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
     # Start a terminal
     bindsym $mod+Return exec $term
     bindsym $mod+p exec grim -g "$(slurp)" - | wl-copy 
 
     # Kill focused window
     bindsym $mod+Shift+q kill
+
+    bindsym $mod+w exec $browser
+    bindsym $mod+Shift+r exec $term -e htop
+    bindsym $mod+r exec $term -e ranger
+    bindsym $mod+m exec $term -e ncmpcpp
 
     # Start your launcher
     bindsym $mod+d exec $menu
@@ -80,6 +89,17 @@ exec swayidle -w \
 #
 # Workspaces:
 #
+    # Workspaces Symbols
+    set $wss1 一
+    set $wss2 二
+    set $wss3 三
+    set $wss4 四
+    set $wss5 五
+    set $wss6 六
+    set $wss7 七
+    set $wss8 八
+    set $wss9 九
+    set $wss10 十
     # Switch to workspace
     bindsym $mod+1 workspace number 1
     bindsym $mod+2 workspace number 2
@@ -107,16 +127,7 @@ exec swayidle -w \
 #
 # Layout stuff:
 #
-    # You can "split" the current object of your focus with
-    # $mod+b or $mod+v, for horizontal and vertical splits
-    # respectively.
-    bindsym $mod+b splith
-    bindsym $mod+v splitv
 
-    # Switch the current container between different layout styles
-    bindsym $mod+s layout stacking
-    bindsym $mod+w layout tabbed
-    bindsym $mod+e layout toggle split
 
     # Make the current focus fullscreen
     bindsym $mod+f fullscreen
@@ -164,7 +175,6 @@ mode "resize" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
-bindsym $mod+r mode "resize"
 
 #
 # Status Bar:
@@ -174,11 +184,21 @@ bar {
   swaybar_command waybar
 }
 
-#default_border pixel 2
+default_border pixel 2
 
 # Clipboard
 exec wl-paste -t text --watch clipman store --no-persist
 # Autotiling
 exec autotiling
+# Dunst 
+exec dunst
+# Mpd 
+exec mpd 
+# Transmission-daemon
+exec transmission-daemon
+# Wallpaper 
+exec swaybg -i $HOME/.config/hypr/714226.png
+
 
 include /etc/sway/config.d/*
+

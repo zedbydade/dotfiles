@@ -12,8 +12,9 @@
 
 (set-face-attribute 'default nil :font "Fira Code Retina" :height 160)
 
-;; Make ESC quit prompts
+;; Keybinds
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+(global-set-key (kbd "<SPC-\>") 'split-window-right)
 
 ;; Initialize package sources
 (require 'package)
@@ -122,6 +123,8 @@
  (rune/leader-keys
   "t"  '(:ignore t :which-key "toggles")
   "tt" '(counsel-load-theme :which-key "choose theme")))
+  "\\"  '(split-window-horizontally :which-key "split window vertically")
+  "l"  '(split-window-horizontally :which-key "split window vertically")
 
 (use-package evil
   :init
